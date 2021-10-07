@@ -1,60 +1,27 @@
-# Use an official Python runtime based on Debian 10 "buster" as a parent image.
-FROM python:3.8.1-slim-buster
+# Use an official lightweight Python image.
+# https://hub.docker.com/_/python
+FROM python:3.9-slim
 
-# Add user that will be used in the container.
-RUN useradd wagtail
+ENV APP_HOME /app
+WORKDIR $APP_HOME
 
-# Port used by this container to serve HTTP.
-EXPOSE 8000
+# Install dependencies.
+COPY requirements.txt .
+RUN pip install -U pip && pip install -r requirements.txt
 
-# Set environment variables.
-# 1. Force Python stdout and stderr streams to be unbuffered.
-# 2. Set PORT variable that is used by Gunicorn. This should match "EXPOSE"
-#    command.
-ENV PYTHONUNBUFFERED=1 \
-    PORT=8000
+# Copy local code to the container image.
+COPY . .
 
-# Install system packages required by Wagtail and Django.
-RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-recommends \
-    build-essential \
-    libpq-dev \
-    libmariadbclient-dev \
-    libjpeg62-turbo-dev \
-    zlib1g-dev \
-    libwebp-dev \
- && rm -rf /var/lib/apt/lists/*
+# Service must listen to $PORT environment variable.
+# This default value facilitates local development.
+ENV PORT 8080
 
-# Install the application server.
-RUN pip install "gunicorn==20.0.4"
+# Setting this ensures print statements and log messages
+# promptly appear in Cloud Logging.
+ENV PYTHONUNBUFFERED TRUE
 
-# Install the project requirements.
-COPY requirements.txt /
-RUN pip install -r /requirements.txt
-
-# Use /app folder as a directory where the source code is stored.
-WORKDIR /app
-
-# Set this directory to be owned by the "wagtail" user. This Wagtail project
-# uses SQLite, the folder needs to be owned by the user that
-# will be writing to the database file.
-RUN chown wagtail:wagtail /app
-
-# Copy the source code of the project into the container.
-COPY --chown=wagtail:wagtail . .
-
-# Use user "wagtail" to run the build commands below and the server itself.
-USER wagtail
-
-# Collect static files.
-RUN python manage.py collectstatic --noinput --clear
-
-# Runtime command that executes when "docker run" is called, it does the
-# following:
-#   1. Migrate the database.
-#   2. Start the application server.
-# WARNING:
-#   Migrating database at the same time as starting the server IS NOT THE BEST
-#   PRACTICE. The database should be migrated manually or using the release
-#   phase facilities of your hosting platform. This is used only so the
-#   Wagtail instance can be started with a simple "docker run" command.
-CMD set -xe; python manage.py migrate --noinput; gunicorn yolohlife.wsgi:application
+# Run the web service on container startup. Here we use the gunicorn
+# webserver, with one worker process and 8 threads.
+# For environments with multiple CPU cores, increase the number of workers
+# to be equal to the cores available.
+CMD exec gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 8 --timeout 0 yolohlife.wsgi:application

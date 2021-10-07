@@ -11,11 +11,22 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import io
 import os
+
+import environ
+from google.cloud import secretmanager as sm
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
+# Allow all hosts to access Django site
+ALLOWED_HOSTS = ["*"]
+
+try:
+    from .local import *  # type: ignore
+except ImportError:
+    pass
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -26,7 +37,6 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 INSTALLED_APPS = [
     'home',
     'search',
-
     'blog',
 
     'wagtail.api.v2',
@@ -44,6 +54,7 @@ INSTALLED_APPS = [
 
     'modelcluster',
     'rest_framework',
+    'storages',
     'taggit',
 
     'django.contrib.admin',
@@ -87,18 +98,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'yolohlife.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -164,3 +163,36 @@ WAGTAIL_SITE_NAME = "yolohlife"
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 BASE_URL = 'http://example.com'
+
+
+############# GOOGLE CLOUD SETTINGS ########################################################
+
+PROJECT_ID = "yoloh-life"
+SETTINGS_NAME = "application_settings"
+
+# Pull django-environ settings file, stored in Secret Manager
+client = sm.SecretManagerServiceClient()
+
+name = f"projects/{PROJECT_ID}/secrets/{SETTINGS_NAME}/versions/latest"
+payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")  # type: ignore
+env = environ.Env()
+env.read_env(io.StringIO(payload))
+
+# Setting this value from django-environ
+SECRET_KEY = env("SECRET_KEY")
+
+# Set this value from django-environ
+DATABASES = {"default": env.db()}
+
+# Define static storage via django-storages[google]
+GS_BUCKET_NAME = env("GS_BUCKET_NAME")
+STATICFILES_DIRS = []
+DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+GS_DEFAULT_ACL = "publicRead"
+
+
+####################### DEBUG #####################################################
+DEBUG = True
+
+
