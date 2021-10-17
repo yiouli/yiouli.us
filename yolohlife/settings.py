@@ -35,9 +35,10 @@ except ImportError:
 # Application definition
 
 INSTALLED_APPS = [
+    'blog',
     'home',
     'search',
-    'blog',
+    'yolohlife',
 
     'wagtail.api.v2',
     'wagtail.contrib.forms',
@@ -194,5 +195,3 @@ GS_DEFAULT_ACL = "publicRead"
 
 ####################### DEBUG #####################################################
 DEBUG = True
-
-
