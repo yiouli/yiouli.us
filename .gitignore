@@ -1,3 +1,6 @@
-/env/*
 **/__pycache__/*
-/.vscode/*
+.venv/*
+.vscode/*
+frontend/node_modules/*
+frontend/static/build/*
+db.sqlite3

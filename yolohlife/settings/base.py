@@ -11,17 +11,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import io
 import os
-
-import environ
-from google.cloud import secretmanager as sm
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
-
-# Allow all hosts to access Django site
-ALLOWED_HOSTS = ["*"]
 
 try:
     from .local import *  # type: ignore
@@ -37,6 +30,7 @@ except ImportError:
 INSTALLED_APPS = [
     'blog',
     'home',
+    'frontend',
     'search',
     'yolohlife',
 
@@ -145,53 +139,10 @@ STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, 'static'),
 ]
 
-# ManifestStaticFilesStorage is recommended in production, to prevent outdated
-# JavaScript / CSS assets being served from cache (e.g. after a Wagtail upgrade).
-# See https://docs.djangoproject.com/en/3.2/ref/contrib/staticfiles/#manifeststaticfilesstorage
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = '/static/'
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
-
-
 # Wagtail settings
 
 WAGTAIL_SITE_NAME = "yolohlife"
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
-BASE_URL = 'http://example.com'
-
-
-############# GOOGLE CLOUD SETTINGS ########################################################
-
-PROJECT_ID = "yoloh-life"
-SETTINGS_NAME = "application_settings"
-
-# Pull django-environ settings file, stored in Secret Manager
-client = sm.SecretManagerServiceClient()
-
-name = f"projects/{PROJECT_ID}/secrets/{SETTINGS_NAME}/versions/latest"
-payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")  # type: ignore
-env = environ.Env()
-env.read_env(io.StringIO(payload))
-
-# Setting this value from django-environ
-SECRET_KEY = env("SECRET_KEY")
-
-# Set this value from django-environ
-DATABASES = {"default": env.db()}
-
-# Define static storage via django-storages[google]
-GS_BUCKET_NAME = env("GS_BUCKET_NAME")
-STATICFILES_DIRS = []
-DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
-STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
-GS_DEFAULT_ACL = "publicRead"
-
-
-####################### DEBUG #####################################################
-DEBUG = True
+BASE_URL = 'https://yoloh.life'

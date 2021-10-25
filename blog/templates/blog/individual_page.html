@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Django REST with React</title>
+
+<body>
+    {% load static %}
+    <div id="root">
+        <!-- React will load here -->
+    </div>
+    <!-- react built js file path specified in frontend/webpack.config.js -->
+    <script src="{% static "build/bundle.js" %}"></script>
+</body>
+
+</html>
