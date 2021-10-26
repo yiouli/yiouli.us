@@ -15,6 +15,9 @@ IMAGE="gcr.io/$PROJECT_ID/wagtail-cloudrun"
 APPROOT=$PWD
 GCMIGRATE="${APPROOT}/cloudmigrate.yaml"
 
+alias dev="export DJANGO_SETTINGS_MODULE='yolohlife.settings.dev'; echo 'Changed Django settings to dev'"
+alias prod="export DJANGO_SETTINGS_MODULE='yolohlife.settings.prod'; echo 'Changed Django settings to prod'"
+
 alias appsettings="gcloud secrets versions access latest --secret application_settings && echo ''"
 alias adminpw="gcloud secrets versions access latest --secret admin_password && echo ''"
 
@@ -25,11 +28,13 @@ alias gcd="gcloud run deploy yoloh-life --platform managed --region $REGION \
   --image $IMAGE \
   --add-cloudsql-instances ${PROJECT_ID}:${REGION}:${INSTANCE} \
   --allow-unauthenticated"
+alias deploy="gcb; gcd"
 
 alias startdb="gcloud sql instances patch ${instance} --activation-policy=NEVER"
 alias stopdb="gcloud sql instances patch ${instance} --activation-policy=ALWAYS"
 alias dbproxy="cloud_sql_proxy -dir=/cloudsql &"
 
-alias run="jsb; python3 manage.py runserver"
+alias run="python3 manage.py runserver"
 
+dev
 source .venv/bin/activate

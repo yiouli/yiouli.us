@@ -3,6 +3,7 @@ from django.db.models.fields import EmailField, TextField
 from modelcluster.fields import ParentalManyToManyField
 from phonenumber_field.modelfields import PhoneNumberField
 from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.api import APIField
 from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField
 
@@ -18,10 +19,11 @@ class PerspectivePage(Page):
         FieldPanel("body", classname='full'),
     ]
 
-    def get_context(self, request):
-        context = super().get_context(request)
-        context['insights'] = self.insight_set.all()  #type: ignore
-        return context
+    api_fields = [
+        APIField("name"),
+        APIField("body"),
+    ]
+
 
 class InsightPage(Page):
     subpage_types = []
@@ -34,6 +36,12 @@ class InsightPage(Page):
         FieldPanel('perspectives'),
     ]
 
+    api_fields = [
+        APIField("name"),
+        APIField("body"),
+    ]
+
+
 class MilestonePage(Page):
     subpage_types = []
 
@@ -43,6 +51,11 @@ class MilestonePage(Page):
     content_panels = Page.content_panels + [
         FieldPanel('objective', classname='title'),
         FieldPanel("body", classname='full'),
+    ]
+
+    api_fields = [
+        APIField("objective"),
+        APIField("body"),
     ]
 
 
@@ -55,6 +68,11 @@ class MomentPage(Page):
         FieldPanel("body", classname='full'),
     ]
 
+    api_fields = [
+        APIField("body"),
+    ]
+
+
 class ProjectPage(Page):
     subpage_types = [InsightPage, MilestonePage, MomentPage]
 
@@ -63,6 +81,11 @@ class ProjectPage(Page):
     content_panels = Page.content_panels + [
         FieldPanel("body", classname='full'),
     ]
+
+    api_fields = [
+        APIField("body"),
+    ]
+
 
 class JourneyPage(Page):
     subpage_types = [InsightPage, MomentPage, ProjectPage]
@@ -73,14 +96,24 @@ class JourneyPage(Page):
         FieldPanel("body", classname='full'),
     ]
 
+    api_fields = [
+        APIField("body"),
+    ]
+
+
 class LifePage(Page):
-    subpage_types = [InsightPage, MomentPage, JourneyPage]
+    subpage_types = [InsightPage, MomentPage, JourneyPage, ProjectPage]
 
     body = RichTextField(default='')
 
     content_panels = Page.content_panels + [
         FieldPanel("body", classname='full'),
     ]
+
+    api_fields = [
+        APIField("body"),
+    ]
+
 
 class IndividualPage(Page):
     subpage_types = [LifePage, PerspectivePage]
@@ -97,5 +130,13 @@ class IndividualPage(Page):
         FieldPanel('email'),
         FieldPanel('phone'),
         FieldPanel("about", classname='full'),
+    ]
+
+    api_fields = [
+        APIField('first_name'),
+        APIField('last_name'),
+        APIField('email'),
+        APIField('phone'),
+        APIField("about"),
     ]
 
