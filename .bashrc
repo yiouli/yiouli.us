@@ -30,6 +30,6 @@ alias startdb="gcloud sql instances patch ${instance} --activation-policy=NEVER"
 alias stopdb="gcloud sql instances patch ${instance} --activation-policy=ALWAYS"
 alias dbproxy="cloud_sql_proxy -dir=/cloudsql &"
 
-alias run="jsb; python3 manage.py runserver"
+alias run="python3 manage.py runserver"
 
 source .venv/bin/activate
