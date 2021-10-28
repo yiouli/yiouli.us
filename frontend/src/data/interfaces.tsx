@@ -10,6 +10,7 @@ export interface IndividualData {
   email: string;
   phone: string;
   about: string;
+  avatar: string|null;
   metadata: Metadata;
 }
 
