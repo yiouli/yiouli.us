@@ -10,6 +10,24 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 
+interface BioAvatarProps {
+  individualData: IndividualData,
+}
+
+function BioAvatar(props: BioAvatarProps): React.ReactElement {
+  const data = props.individualData;
+  const fn = data.first_name;
+  const ln = data.last_name;
+  const sx = {
+  };
+  if (data.avatar){
+    return <Avatar alt={fn} src={data.avatar} />;
+  }
+  else {
+    return <Avatar alt={fn}>{fn[0]}{ln[0]}</Avatar>
+  }
+}
+
 export interface BiographyProps {
   pageId: number,
 }
@@ -39,19 +57,25 @@ export default function Biography(props: BiographyProps): React.ReactElement {
   } else if (!isLoaded) {
     return <LinearProgress />;
   } else {
-    return <Stack direction="row">
-      <Box>
-        {data.avatar
-          ? <Avatar alt={data.first_name} src={data.avatar} />
-          : <Avatar alt={data.first_name}>{data.first_name[0]}{data.last_name[0]}</Avatar>
-        }
-      </Box>
-      <Box>
-      <Typography variant="h3">
-        <>Hi! I'm {data.first_name} {data.last_name}.</>
-      </Typography>
-      <Typography variant="body1" component='div'>{HTMLReactParser(data.about)}</Typography>
-      </Box>
-    </Stack>;
+    return (
+      <Stack
+        direction="row"
+        sx={{
+          width: '100%',
+          justifyContent: 'center',
+          alignItems: 'baseline',
+          gap: 2,
+        }}>
+        <Box sx={{width: '33%', display: 'flex', flexDirection: 'row-reverse'}}>
+          <BioAvatar individualData={data} />
+        </Box>
+        <Box sx={{width: '67%', p: 3}}>
+          <Typography variant="h3">
+            <>Hi! I'm {data.first_name}.</>
+          </Typography>
+          <Typography variant="body1" component='div'>{HTMLReactParser(data.about)}</Typography>
+        </Box>
+      </Stack>
+    );
   }
 }

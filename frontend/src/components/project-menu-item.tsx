@@ -1,12 +1,9 @@
-import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-function ProjectMenuItem(props) {
-
-}
-
-ProjectMenuItem.propTypes = {
+export interface ProjectMenuProps {
 
 }
 
-export default ProjectMenuItem;
+export default function ProjectMenu(props: ProjectMenuProps): React.ReactElement {
+  return <></>;
+}

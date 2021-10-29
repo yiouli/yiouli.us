@@ -52,6 +52,8 @@ function SearchDrawer(props: SearchDrawerProps): React.ReactElement {
       open={isOpen}
       onOpen={() => { openDrawer(null) }}
       onClose={closeDrawer}
+      disableDiscovery={true}
+      disableSwipeToOpen={true}
     >
       <Box>
         <SearchInput disabled={true} query={query} searchCallback={openDrawer} />

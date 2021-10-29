@@ -24,6 +24,7 @@ const darkPalette = {
     light: '#ffffff',
     main: '#ede7f6',
     dark: '#bbb5c3',
+    contrastText: '#000',
   },
   secondary: {...lightPalette.secondary},
   background: {
@@ -35,7 +36,8 @@ const darkPalette = {
     secondary: 'rgba(255, 255, 255, 0.7)',
     disabled: 'rgba(255, 255, 255, 0.5)',
     icon: 'rgba(255, 255, 255, 0.5)',
-  }
+  },
+  divider: 'rgba(255, 255, 255, 0.2)',
 }
 
 const rawTheme = createTheme({
@@ -48,7 +50,7 @@ const rawTheme = createTheme({
     },
   },
   typography: {
-    fontFamily: "'Work Sans', sans-serif",
+    fontFamily: "'Roboto'",
     fontSize: 14,
     fontWeightLight: 300, // Work Sans
     fontWeightRegular: 400, // Work Sans
@@ -57,10 +59,8 @@ const rawTheme = createTheme({
 });
 
 const fontHeader = {
-  color: rawTheme.palette.text.primary,
   fontWeight: rawTheme.typography.fontWeightMedium,
-  fontFamily: "'Roboto Condensed', sans-serif",
-  textTransform: 'uppercase',
+  fontFamily: "'Roboto Condensed'",
 };
 
 const coolTheme = {
