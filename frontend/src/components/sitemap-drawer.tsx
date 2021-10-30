@@ -44,7 +44,11 @@ export default function SitemapDrawer(props: SitemapDrawerProps): React.ReactEle
       onOpen={toggleDrawer}
       onClose={toggleDrawer}
     >
-      <SitemapMenu currentPageId={props.currentPageId} siteTrees={siteTrees} />
+      <SitemapMenu
+        currentPageId={props.currentPageId}
+        siteTrees={siteTrees}
+        onNavigate={props.onNavigate}
+      />
     </SwipeableDrawer>
   </>;
 }

@@ -1,14 +1,17 @@
 export enum PageType {
+  // order matter here, it determines page ordering in sitemap menu.
   Individual,
   Life,
   Perspective,
-  Moment,
   Project,
+  Insight,
+  Moment,
   General,
 }
 
 export interface Metadata {
   html_url: string;
+  type: string;
 }
 
 export interface PageData {

@@ -6,7 +6,6 @@ import {
   BrowserRouter,
   Switch,
   Route,
-  useHistory,
 } from "react-router-dom";
 
 import Individual from './components/individual';
@@ -27,16 +26,14 @@ interface MapEntry {
 function App() {
   const [mode, setMode] = useState<PaletteMode>('light');
   const [currentPageId, setCurrentPageId] = useState<number>(window.pageId);
-  const routerHistory = useHistory();
 
   const toggleMode = useCallback(() => {
     mode == 'light' ? setMode('dark') : setMode('light');
   }, [mode]);
 
   const route = useCallback((pageId: number, url: string, page: PageData) => {
-    setCurrentPageId(currentPageId);
-    routerHistory.push(url);
-  }, [routerHistory]);
+    setCurrentPageId(pageId);
+  }, []);
 
   const content = <>
     <CssBaseline />
