@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
-import { PageData, Sitemap, SiteTree } from '../data/interfaces';
-import { getSiteTrees } from '../data/fetchers';
+import React from 'react';
+import { SiteTree } from '../data/interfaces';
 import { Button, SwipeableDrawer, Tooltip } from '@mui/material';
-import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import MenuIcon from '@mui/icons-material/Menu';
 import { useCallback, useState } from 'react';
 import SitemapMenu from './sitemap-menu';
 
@@ -10,7 +9,7 @@ export function SitemapIcon({ onClick }): React.ReactElement {
   return (
     <Tooltip title='Sitemap'>
       <Button onClick={onClick}>
-        <AccountTreeIcon />
+        <MenuIcon />
       </Button>
     </Tooltip >
   );
@@ -19,23 +18,21 @@ export function SitemapIcon({ onClick }): React.ReactElement {
 export interface SitemapDrawerProps {
   isOpen: boolean;
   currentPageId: number;
-  onNavigate: (pageId: number, url: string, pageData: PageData) => void;
+  onNavigate: (siteTreeNode: SiteTree) => void;
+  siteTree: SiteTree;
 }
 
 export default function SitemapDrawer(props: SitemapDrawerProps): React.ReactElement {
   const [isOpen, setIsOpen] = useState<boolean>(props.isOpen);
-  const [siteTrees, setSiteTrees] = useState<SiteTree[]>([]);
-
-  useEffect(() => {
-    (async () => {
-      const sts = await getSiteTrees();
-      setSiteTrees(sts);
-    })();
-  }, []);
 
   const toggleDrawer = useCallback((e) => {
     setIsOpen(!isOpen);
   }, [isOpen]);
+
+  const onNavigate = useCallback((t) => {
+    props.onNavigate(t);
+    setIsOpen(false);
+  }, []);
 
   return <>
     <SitemapIcon onClick={toggleDrawer} />
@@ -46,8 +43,9 @@ export default function SitemapDrawer(props: SitemapDrawerProps): React.ReactEle
     >
       <SitemapMenu
         currentPageId={props.currentPageId}
-        siteTrees={siteTrees}
-        onNavigate={props.onNavigate}
+        siteTree={props.siteTree}
+        onNavigate={onNavigate}
+        level={0}
       />
     </SwipeableDrawer>
   </>;

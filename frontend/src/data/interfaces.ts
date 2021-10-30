@@ -25,6 +25,7 @@ export type Sitemap = { [pageId: number]: PageData };
 export type SiteTree = {
   id: number,
   url: string,
+  relativePath: string,
   page: PageData,
   children: SiteTree[],
 }

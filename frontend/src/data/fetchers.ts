@@ -7,7 +7,7 @@ import {
   Sitemap,
   SiteTree,
 } from "./interfaces";
-import { buildSiteTrees } from './utils';
+import { buildSiteTrees, getCurrentSiteTree } from './utils';
 
 // endpoint enum values should match the registered endpoints in yolohlife/api.py
 const enum Endpoint {
@@ -29,9 +29,10 @@ export async function getSitemap(): Promise<Sitemap> {
     ), {});
 }
 
-export async function getSiteTrees(): Promise<SiteTree[]> {
+export async function getSiteTree(currentPageId: number): Promise<SiteTree> {
   const sitemap = await getSitemap();
-  return buildSiteTrees(sitemap);
+  const trees = buildSiteTrees(sitemap);
+  return getCurrentSiteTree(currentPageId, trees);
 }
 
 export async function getIndividual(id: Number): Promise<IndividualData> {

@@ -29,15 +29,15 @@ function compareTrees(tree1: SiteTree, tree2: SiteTree): number {
   return tt1 - tt2;
 }
 
-interface TreeMenuProps {
-  tree: SiteTree;
+export interface SitemapMenuProps {
+  siteTree: SiteTree;
   currentPageId: number;
+  onNavigate: (siteTreeNode: SiteTree) => void;
   level: number;
-  onNavigate: (pageId: number, url: string, pageData: PageData) => void;
 }
 
-function TreeMenu(props: TreeMenuProps) {
-  const { tree, currentPageId, level, onNavigate } = props;
+export default function SitemapMenu(props: SitemapMenuProps) {
+  const { siteTree, currentPageId, onNavigate, level } = props;
   // this requires the menu be a child of router
   const routerHistory = useHistory();
 
@@ -54,24 +54,24 @@ function TreeMenu(props: TreeMenuProps) {
   }
 
   const handleClick = useCallback((e) => {
-    routerHistory.push(tree.url);
-    onNavigate(tree.id, tree.url, tree.page);
-  }, [tree, routerHistory]);
+    routerHistory.push(siteTree.relativePath);
+    onNavigate(siteTree);
+  }, [siteTree, routerHistory]);
 
   return (
     <List component="nav" sx={{ p: 0, m: 0 }}>
       <ListItemButton
-        selected={currentPageId == tree.id}
+        selected={currentPageId == siteTree.id}
         sx={{ pl: level * 4, pr: 4 }}
         onClick={handleClick}
       >
-        <ListItemIcon sx={{ pl: 2 }}>{getIcon(getPageType(tree.page))}</ListItemIcon>
-        <ListItemText primary={tree.page.title} />
+        <ListItemIcon sx={{ pl: 2 }}>{getIcon(getPageType(siteTree.page))}</ListItemIcon>
+        <ListItemText primary={siteTree.page.title} />
       </ListItemButton>
       <List component="nav" sx={{ p: 0, m: 0 }}>
-        {tree.children.sort(compareTrees).map((t) => {
-          return <TreeMenu
-            tree={t}
+        {siteTree.children.sort(compareTrees).map((t) => {
+          return <SitemapMenu
+            siteTree={t}
             currentPageId={currentPageId}
             level={level + 1}
             key={`site-menu-${t.id}`}
@@ -80,28 +80,5 @@ function TreeMenu(props: TreeMenuProps) {
         })}
       </List>
     </List >
-  );
-}
-
-export interface SitemapMenuProps {
-  currentPageId: number;
-  siteTrees: SiteTree[];
-  onNavigate: (pageId: number, url: string, pageData: PageData) => void;
-}
-
-export default function SitemapMenu(props: SitemapMenuProps): React.ReactElement {
-  const { currentPageId, siteTrees, onNavigate } = props;
-  return (
-    <List subheader={<ListSubheader>Get Around...</ListSubheader>}>
-      {siteTrees.sort(compareTrees).map((t) => {
-        return <TreeMenu
-          tree={t}
-          currentPageId={currentPageId}
-          level={0}
-          key={`site-menu-${t.id}`}
-          onNavigate={onNavigate}
-        />
-      })}
-    </List>
   );
 }
