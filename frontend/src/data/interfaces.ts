@@ -1,3 +1,12 @@
+export enum PageType {
+  Individual,
+  Life,
+  Perspective,
+  Moment,
+  Project,
+  General,
+}
+
 export interface Metadata {
   html_url: string;
 }

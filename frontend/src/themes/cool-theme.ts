@@ -28,7 +28,7 @@ const darkPalette = {
   },
   secondary: {...lightPalette.secondary},
   background: {
-    paper: '#212121',
+    paper: '#000000',
     default: '#000000',
   },
   text: {

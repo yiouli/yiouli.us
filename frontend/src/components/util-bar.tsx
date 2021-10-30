@@ -1,4 +1,4 @@
-import { PaletteMode } from '@mui/material';
+import { PaletteMode, Tooltip } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -10,6 +10,7 @@ import React from 'react';
 import { PageData } from '../data/interfaces';
 import SearchDrawer from './search-drawer';
 import SitemapDrawer from './sitemap-drawer';
+import DraftsIcon from '@mui/icons-material/Drafts';
 
 export interface UtilBarProps {
   currentPageId: number,
@@ -25,9 +26,9 @@ export default function UtilBar(props: UtilBarProps): React.ReactElement {
       <Toolbar>
         <Stack spacing={1} direction="row" sx={{width: '100%'}}>
           <SitemapDrawer currentPageId={currentPageId} onNavigate={onNavigate} isOpen={false} />
-          <Button variant="text">Contact</Button>
+          <Tooltip title='Contact Me'><Button><DraftsIcon /></Button></Tooltip>
           <SearchDrawer isOpen={false} />
-          <FormGroup sx={{ order: 100 }}>
+          <FormGroup sx={{ order: 100, pl: 2 }}>
             <FormControlLabel
               control={<Switch color='secondary' onChange={onToggleMode} defaultChecked={false} />}
               label={mode}

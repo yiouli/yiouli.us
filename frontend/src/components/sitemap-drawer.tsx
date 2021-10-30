@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react';
-import { PageData, Sitemap } from '../data/interfaces';
+import { PageData, Sitemap, SiteTree } from '../data/interfaces';
 import { getSiteTrees } from '../data/fetchers';
-import { IconButton, SwipeableDrawer, Tooltip } from '@mui/material';
+import { Button, SwipeableDrawer, Tooltip } from '@mui/material';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import { useCallback, useState } from 'react';
+import SitemapMenu from './sitemap-menu';
 
 export function SitemapIcon({ onClick }): React.ReactElement {
   return (
     <Tooltip title='Sitemap'>
-      <IconButton onClick={onClick}>
+      <Button onClick={onClick}>
         <AccountTreeIcon />
-      </IconButton>
+      </Button>
     </Tooltip >
   );
 }
@@ -23,10 +24,12 @@ export interface SitemapDrawerProps {
 
 export default function SitemapDrawer(props: SitemapDrawerProps): React.ReactElement {
   const [isOpen, setIsOpen] = useState<boolean>(props.isOpen);
+  const [siteTrees, setSiteTrees] = useState<SiteTree[]>([]);
 
   useEffect(() => {
     (async () => {
-      const siteTrees = await getSiteTrees();
+      const sts = await getSiteTrees();
+      setSiteTrees(sts);
     })();
   }, []);
 
@@ -41,7 +44,7 @@ export default function SitemapDrawer(props: SitemapDrawerProps): React.ReactEle
       onOpen={toggleDrawer}
       onClose={toggleDrawer}
     >
-      sitemap
+      <SitemapMenu currentPageId={props.currentPageId} siteTrees={siteTrees} />
     </SwipeableDrawer>
   </>;
 }

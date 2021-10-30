@@ -66,10 +66,10 @@ export default function Biography(props: BiographyProps): React.ReactElement {
           alignItems: 'baseline',
           gap: 2,
         }}>
-        <Box sx={{width: '33%', display: 'flex', flexDirection: 'row-reverse'}}>
+        <Box sx={{width: '40%', display: 'flex', flexDirection: 'row-reverse'}}>
           <BioAvatar individualData={data} />
         </Box>
-        <Box sx={{width: '67%', p: 3}}>
+        <Box sx={{width: '60%', p: 3}}>
           <Typography variant="h3">
             <>Hi! I'm {data.first_name}.</>
           </Typography>
