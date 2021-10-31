@@ -5,6 +5,8 @@ import Typography from '@mui/material/Typography';
 import React, { useEffect, useState } from 'react';
 import Biography from './biography';
 import LifeMenu from './life-menu';
+import MomentGrid from './moment-grid';
+import ProjectCarousel from './project-carousel';
 
 function Section(props) {
   return (
@@ -34,11 +36,12 @@ export default function Individual(props: IndividualProps) {
         <Section title='About Me'>
           <LifeMenu individualId={props.pageId} />
         </Section>
-        <Section title='Thoughts'>
-          fdsfsdijfo
+        <Section title='Projects'>
+          <ProjectCarousel individualId={props.pageId} />
         </Section>
-        <Section title='Projects' />
-        <Section title='Moments' />
+        <Section title='Moments'>
+          <MomentGrid individualId={props.pageId} />
+        </Section>
       </Stack>
     </Box>
   );
