@@ -1,25 +1,9 @@
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Biography from './biography';
 import LifeMenu from './life-menu';
 import MomentGrid from './moment-grid';
+import PageContainer, { Section } from './page-container';
 import ProjectCarousel from './project-carousel';
-
-function Section(props) {
-  return (
-    <Box>
-      <Divider sx={{mb:1}}>
-        <Typography variant="h5">
-          {props.title}
-        </Typography>
-      </Divider>
-      {props.children}
-    </Box>
-  );
-}
 
 export interface IndividualProps {
   pageId: number;
@@ -27,11 +11,7 @@ export interface IndividualProps {
 
 export default function Individual(props: IndividualProps) {
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-      <Stack
-        spacing={2}
-        sx={{ width: '80%' }}
-      >
+    <PageContainer>
         <Biography pageId={props.pageId} />
         <Section title='About Me'>
           <LifeMenu individualId={props.pageId} />
@@ -42,7 +22,6 @@ export default function Individual(props: IndividualProps) {
         <Section title='Moments'>
           <MomentGrid individualId={props.pageId} />
         </Section>
-      </Stack>
-    </Box>
+    </PageContainer>
   );
 }
