@@ -1,47 +1,48 @@
-import { AxiosError } from 'axios';
-import HTMLReactParser from 'html-react-parser'; 
-import PropTypes from 'prop-types';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import React, { useEffect, useState } from 'react';
-import { getIndividual } from '../data/fetchers';
-import { IndividualData } from '../data/interfaces';
+import Biography from './biography';
+import LifeMenu from './life-menu';
+import MomentGrid from './moment-grid';
+import ProjectCarousel from './project-carousel';
 
-function Individual({ pageId }) {
-  const [error, setError] = useState<AxiosError|null>(null);
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [data, setData] = useState<IndividualData|undefined>(undefined);
-
-  useEffect(() => {
-      // https://www.robinwieruch.de/react-hooks-fetch-data
-      const func = async () => {
-        try {
-          const resData = await getIndividual(pageId);
-          setData(resData);
-          setIsLoaded(true);
-        }
-        catch (err) {
-          setError(err);
-          setIsLoaded(true);
-        }
-      };
-      func();
-  }, []);
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  } else if (!isLoaded) {
-    return <div>Loading...</div>;
-  } else {
-    return (
-      <>
-        <h1>{data.first_name} {data.last_name}</h1>
-        {HTMLReactParser(data.about)}
-      </>
-    );
-  }
+function Section(props) {
+  return (
+    <Box>
+      <Divider sx={{mb:1}}>
+        <Typography variant="h5">
+          {props.title}
+        </Typography>
+      </Divider>
+      {props.children}
+    </Box>
+  );
 }
 
-Individual.propTypes = {
-  pageId: PropTypes.number.isRequired,
+export interface IndividualProps {
+  pageId: number;
 }
 
-export default Individual;
+export default function Individual(props: IndividualProps) {
+  return (
+    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+      <Stack
+        spacing={2}
+        sx={{ width: '80%' }}
+      >
+        <Biography pageId={props.pageId} />
+        <Section title='About Me'>
+          <LifeMenu individualId={props.pageId} />
+        </Section>
+        <Section title='Projects'>
+          <ProjectCarousel individualId={props.pageId} />
+        </Section>
+        <Section title='Moments'>
+          <MomentGrid individualId={props.pageId} />
+        </Section>
+      </Stack>
+    </Box>
+  );
+}
