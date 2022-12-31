@@ -67,15 +67,7 @@ export function getCurrentSiteTree(pageId: number, trees: SiteTree[]): SiteTree 
 }
 
 export function getPageType(page: PageData): PageType {
-  switch (page.meta.type) {
-    case 'blog.IndividualPage': return PageType.Individual;
-    case 'blog.InsightPage': return PageType.Insight;
-    case 'blog.LifePage': return PageType.Life;
-    case 'blog.MomentPage': return PageType.Moment;
-    case 'blog.PerspectivePage': return PageType.Perspective;
-    case 'blog.ProjectPage': return PageType.Project;
-    default: return PageType.General;
-  }
+  return PageType[page.meta.type];
 }
 
 export async function fetchData<T>(

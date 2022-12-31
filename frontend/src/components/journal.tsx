@@ -11,63 +11,57 @@ import {
   timelineOppositeContentClasses,
   TimelineSeparator,
 } from '@mui/lab';
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
+import { AxiosError } from 'axios';
+import { fetchData } from '../data/utils';
+import { ArticleData } from '../data/interfaces';
+import { getArticles } from '../data/fetchers';
+import nullthrows from 'nullthrows';
+import DataRenderer from './data-renderer';
+import ArticleCard from './article-card';
 
 interface JournalTimelineProps {
-  individualId: number;
 }
 
 function JournalTimeline(props: JournalTimelineProps): React.ReactElement {
-  return (
-    <Timeline 
+  const [error, setError] = React.useState<AxiosError | undefined>(undefined);
+  const [isLoaded, setIsLoaded] = React.useState<boolean>(false);
+  const [data, setData] = React.useState<ArticleData[]>([]);
+
+  useEffect(() => {
+    // https://www.robinwieruch.de/react-hooks-fetch-data
+    (async () => await fetchData(
+      getArticles(),
+      setData,
+      () => setIsLoaded(true),
+      setError,
+    ))();
+  }, []);
+
+  const getContent = useCallback(() => {
+    const articles = nullthrows(data);
+    return <Timeline 
       sx={{
         [`& .${timelineOppositeContentClasses.root}`]: {
           flex: 0.1,
         },
       }}>
-      <TimelineItem>
-        <TimelineOppositeContent color="text.secondary">
-          09:30 am
-        </TimelineOppositeContent>
-        <TimelineSeparator>
-          <TimelineDot />
-          <TimelineConnector />
-        </TimelineSeparator>
-        <TimelineContent>Eat</TimelineContent>
-      </TimelineItem>
+      {articles.map(article =>
+        <TimelineItem key={'article-' + article.id}>
+          <TimelineOppositeContent color="text.secondary">
+            {article.date_display}
+          </TimelineOppositeContent>
+          <TimelineSeparator>
+            <TimelineDot />
+            <TimelineConnector />
+          </TimelineSeparator>
+          <TimelineContent><ArticleCard article={article} /></TimelineContent>
+        </TimelineItem>
+        )}
     </Timeline>
-  );
-}
+  }, [data]);
 
-function getCard<T>(items: T[], endIdx: number) {
-  return (
-    <Card key={`life-card-${endIdx}`}>
-      <Stack direction='row' gap={1}>
-        {items.map((d, idx) =>
-          <Card
-            elevation={3}
-            key={`life-card-item-${endIdx}-${idx}`}
-            sx={{ m: 1, p: 2, flexGrow: 1 }}
-          >{d}</Card>)
-        }
-      </Stack>
-    </Card>
-  );
-}
-
-function getCards<T>(data: T[], itemPerCard: number) {
-  itemPerCard = Math.max(itemPerCard, 1);
-  var items: T[] = [];
-  const ret: JSX.Element[] = [];
-  data.forEach((item, idx) => {
-    items.push(item);
-    if ((idx + 1) % itemPerCard == 0) {
-      ret.push(getCard(items, idx));
-      items = [];
-    }
-  });
-  if (items.length > 0) ret.push(getCard(items, data.length - 1));
-  return ret;
+  return <DataRenderer isLoaded={isLoaded} error={error} getContent={getContent} />;
 }
 
 export default JournalTimeline;

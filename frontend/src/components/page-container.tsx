@@ -10,11 +10,10 @@ interface SectionProps {
 export const Section: React.FC<SectionProps> = ({title, children}) => {
   return (
     <Box>
-      <Divider sx={{mb:1}}>
-        {title ? <Typography variant="h5">
-          {title}
-        </Typography> : <></>}
-      </Divider>
+      {title
+        ? <Divider sx={{mb:1}}><Typography variant="h5">{title}</Typography></Divider>
+        : <Divider sx={{mb:1}}/>
+      }
       {children}
     </Box>
   );

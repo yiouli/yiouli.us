@@ -1,12 +1,9 @@
 export enum PageType {
   // order matter here, it determines page ordering in sitemap menu.
-  Individual,
-  Life,
-  Perspective,
-  Project,
-  Insight,
-  Moment,
-  General,
+  Individual = 'blog.IndividualPage',
+  Topic = 'blog.TopicPage',
+  Article = 'blog.ArticlePage',
+  General = 'blog.Page',
 }
 
 export interface Metadata {
@@ -30,34 +27,24 @@ export type SiteTree = {
   children: SiteTree[],
 }
 
-// interface definition should match APIFields defined on models in blog/models.py
+// interface definition should match APIFields defined in blog.models.IndividualPage
 export interface IndividualData extends PageData {
   first_name: string,
   last_name: string,
-  email: string,
-  phone: string,
+  email?: string,
+  phone?: string,
   about: string,
-  avatar: string | null,
 }
 
-export interface LifeData extends PageData {
-  name: string,
+// interface definition should match APIFields defined in blog.models.TopicPage
+export interface TopicData extends PageData {
   description: string,
 }
 
-export interface MomentData {
-  img: string,
-  title: string,
-  author: string,
+// interface definition should match APIFields defined in blog.models.ArticlePage
+export interface ArticleData extends PageData {
+  body: string,
+  date: string,
+  date_display: string,
+  topics: PageData[],
 }
-
-export interface ProjectData {
-  title: string,
-  description: string,
-  coverPath: string,
-}
-
-export interface PerspectiveData {
-  
-}
-

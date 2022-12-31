@@ -1,25 +1,24 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { LifeData } from '../data/interfaces';
 import { AxiosError } from 'axios';
 import BlockMenu from './block-menu';
 import DataRenderer from './data-renderer';
-import { getLifes } from '../data/fetchers';
 import { fetchData } from '../data/utils';
 import Typography from '@mui/material/Typography';
+import { TopicData } from '../data/interfaces';
+import { getTopics } from '../data/fetchers';
 
 export interface TopicsProps {
-  individualId: number;
 }
 
 export default function Topics(props: TopicsProps): React.ReactElement {
   const [error, setError] = useState<AxiosError | undefined>(undefined);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [data, setData] = useState<LifeData[]>([]);
+  const [data, setData] = useState<TopicData[]>([]);
 
   useEffect(() => {
     // https://www.robinwieruch.de/react-hooks-fetch-data
     (async () => await fetchData(
-      getLifes(props.individualId),
+      getTopics(),
       setData,
       () => setIsLoaded(true),
       setError,
@@ -29,7 +28,7 @@ export default function Topics(props: TopicsProps): React.ReactElement {
   const getContent = useCallback(() => {
     return <BlockMenu keyPrefix='life' items={data.map((item) => {
         return <>
-          <Typography variant="h6">{item.name}</Typography>
+          <Typography variant="h6">#{item.title}</Typography>
           <Typography variant="body2">{item.description}</Typography>
         </>;
       })} />

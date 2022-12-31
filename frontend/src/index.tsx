@@ -15,7 +15,7 @@ import { fetchData } from './data/utils';
 import coolTheme, { coolDarkTheme } from './themes/cool-theme';
 import PageContainer, { Section } from './components/page-container';
 import Biography from './components/biography';
-import Highlights from './components/top-of-minds';
+import Highlights from './components/highlights';
 import Topics from './components/topics';
 import JournalTimeline from './components/journal';
 
@@ -95,14 +95,12 @@ function App(): React.ReactElement {
       
       <PageContainer>
           <Biography pageId={currentPageId} />
-          <Section title='Top of Mind'>
-            <Highlights individualId={currentPageId} />
-          </Section>
-          <Section title='Topics'>
-            <Topics individualId={currentPageId} />
-          </Section>
-          <Section title='Journal'>
-            <JournalTimeline individualId={currentPageId} />
+          {/* <Section title='Top of Mind'>
+            <Highlights />
+          </Section> */}
+          <Section>
+            <Topics />
+            <JournalTimeline />
           </Section>
       </PageContainer>
     </>;
