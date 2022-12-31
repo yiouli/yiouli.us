@@ -1,10 +1,8 @@
-from django.conf import settings
 from wagtail.api.v2.serializers import PageSerializer
 
-from wagtail.api.v2.views import BaseAPIViewSet, PagesAPIViewSet
-from wagtail.core.models import Site
+from wagtail.api.v2.views import BaseAPIViewSet
 
-from blog.models import IndividualPage, PerspectivePage, ProjectPage
+from blog.models import ArticlePage, IndividualPage, TopicPage
 
 class AbstractContentAPIViewSet(BaseAPIViewSet):
     name = 'content'
@@ -30,10 +28,10 @@ class IndividualsAPIViewSet(BaseAPIViewSet):
     ]
 
 
-class PerspectivesAPIViewSet(AbstractContentAPIViewSet):
-    model = PerspectivePage
+class TopicsAPIViewSet(AbstractContentAPIViewSet):
+    model = TopicPage
 
 
-class ProjectsAPIViewSet(AbstractContentAPIViewSet):
-    model = ProjectPage
+class ArticlesAPIViewSet(AbstractContentAPIViewSet):
+    model = ArticlePage
 

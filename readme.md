@@ -3,17 +3,6 @@
 [Personal website](http://yoloh.life) developed on top of [Wagtail](https://wagtail.io/) & [Django](https://www.djangoproject.com/), and hosted in Google Cloud.
 
 
-# Environment Setup
-
-> **Several command alias used below are defined in local [.bashrc](.bashrc) file in this repository, it's important to complete this section before following further steps.**
-
-First setup bash to load local [.bashrc](.bashrc) file in the repository, by adding the following to ~/.bashrc:
-
-     PROMPT_COMMAND='if [[ "$bashrc" != "$PWD" && "$PWD" != "$HOME" && -e .bashrc ]]; then bashrc="$PWD"; . .bashrc; fi'
-
-Make sure to following steps while running from bash that has loaded the local [.bashrc](.bashrc) file.
-
-
 ## Python
 
 This repo requires [Python 3.9.5+](https://www.python.org/downloads/).
@@ -25,7 +14,7 @@ Create and activate virtual environment in the root folder:
 
 Install required Python package dependencies:
 
-    pip install -r requirement.txt
+    pip install -r requirements.txt
 
 
 ## Javascript/React
@@ -59,6 +48,16 @@ Authenticate with your account:
     gcloud auth login
 
 Reload your bash to populate project name in variables.
+
+# Environment Setup
+
+> **Several command alias used below are defined in local [.bashrc](.bashrc) file in this repository, it's important to complete this section before following further steps.**
+
+First setup bash to load local [.bashrc](.bashrc) file in the repository, by adding the following to ~/.bashrc:
+
+     PROMPT_COMMAND='if [[ "$bashrc" != "$PWD" && "$PWD" != "$HOME" && -e .bashrc ]]; then bashrc="$PWD"; . .bashrc; fi'
+
+Make sure to following steps while running from bash that has loaded the local [.bashrc](.bashrc) file.
 
 ## Django
 

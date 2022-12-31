@@ -86,8 +86,7 @@ export async function fetchData<T>(
 ): Promise<T | null> {
   var ret = null;
   try {
-    ret = await dataFetch;
-    dataCallback(ret);
+    dataCallback(await dataFetch);
   }
   catch (err) {
     errorCallback(err);

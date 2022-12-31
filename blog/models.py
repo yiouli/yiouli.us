@@ -1,4 +1,5 @@
-from django.db.models.fields import EmailField, TextField
+from django.db.models.fields import DateField, EmailField, TextField
+from django.utils import timezone
 
 from modelcluster.fields import ParentalManyToManyField
 from phonenumber_field.modelfields import PhoneNumberField
@@ -8,103 +9,24 @@ from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField
 
 
-class PerspectivePage(Page):
-    subpage_types = []
+class TopicPage(Page):
 
-    name = TextField()
-    body = RichTextField(default='')
+    description = RichTextField(default='')
 
     content_panels = Page.content_panels + [
-        FieldPanel('name'),
-        FieldPanel("body", classname='full'),
+        FieldPanel("description", classname='full'),
     ]
 
     api_fields = [
-        APIField("name"),
-        APIField("body"),
+        APIField("description"),
     ]
 
+class ArticlePage(Page):
 
-class InsightPage(Page):
-    subpage_types = []
-
-    body = RichTextField(default='')
-    perspectives = ParentalManyToManyField(PerspectivePage, blank=True, related_name='related_insights')
-
-    content_panels = Page.content_panels + [
-        FieldPanel("body", classname='full'),
-        FieldPanel('perspectives'),
-    ]
-
-    api_fields = [
-        APIField("name"),
-        APIField("body"),
-    ]
-
-
-class MilestonePage(Page):
-    subpage_types = []
-
-    objective = TextField(default='')
+    date = DateField(default=timezone.now)
     body = RichTextField(default='')
 
-    content_panels = Page.content_panels + [
-        FieldPanel('objective', classname='title'),
-        FieldPanel("body", classname='full'),
-    ]
-
-    api_fields = [
-        APIField("objective"),
-        APIField("body"),
-    ]
-
-
-class MomentPage(Page):
-    subpage_types = []
-
-    body = RichTextField(default='')
-
-    content_panels = Page.content_panels + [
-        FieldPanel("body", classname='full'),
-    ]
-
-    api_fields = [
-        APIField("body"),
-    ]
-
-
-class ProjectPage(Page):
-    subpage_types = [InsightPage, MilestonePage, MomentPage]
-
-    body = RichTextField(default='')
-
-    content_panels = Page.content_panels + [
-        FieldPanel("body", classname='full'),
-    ]
-
-    api_fields = [
-        APIField("body"),
-    ]
-
-
-class JourneyPage(Page):
-    subpage_types = [InsightPage, MomentPage, ProjectPage]
-
-    body = RichTextField(default='')
-
-    content_panels = Page.content_panels + [
-        FieldPanel("body", classname='full'),
-    ]
-
-    api_fields = [
-        APIField("body"),
-    ]
-
-
-class LifePage(Page):
-    subpage_types = [InsightPage, MomentPage, JourneyPage, ProjectPage]
-
-    body = RichTextField(default='')
+    topics = ParentalManyToManyField(TopicPage, blank=True, related_name='related_topics')
 
     content_panels = Page.content_panels + [
         FieldPanel("body", classname='full'),
@@ -116,7 +38,7 @@ class LifePage(Page):
 
 
 class IndividualPage(Page):
-    subpage_types = [LifePage, PerspectivePage]
+    subpage_types = [TopicPage, ArticlePage]
 
     first_name = TextField()
     last_name = TextField()
@@ -139,4 +61,3 @@ class IndividualPage(Page):
         APIField('phone'),
         APIField("about"),
     ]
-

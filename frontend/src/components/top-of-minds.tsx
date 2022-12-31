@@ -42,12 +42,12 @@ const ProjectCard: React.FC<ProjectCardProps> = (props) => {
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
-export interface ProjectCarouselProps {
+export interface HighlightsProps {
   individualId: number;
 }
 
-const ProjectCarousel: React.FC<ProjectCarouselProps> = (props) => {
-  const [error, setError] = React.useState<AxiosError | null>(null);
+const Highlights: React.FC<HighlightsProps> = (props) => {
+  const [error, setError] = React.useState<AxiosError | undefined>(undefined);
   const [isLoaded, setIsLoaded] = React.useState<boolean>(false);
   const [data, setData] = React.useState<ProjectData[]>([]);
 
@@ -70,5 +70,5 @@ const ProjectCarousel: React.FC<ProjectCarouselProps> = (props) => {
   return <DataRenderer isLoaded={isLoaded} error={error} getContent={getContent} />;
 }
 
-export default ProjectCarousel;
+export default Highlights;
 

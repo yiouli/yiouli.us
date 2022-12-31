@@ -1,18 +1,18 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { LifeData } from '../data/interfaces';
 import { AxiosError } from 'axios';
-import BlockMenu from '../components/block-menu';
-import DataRenderer from '../components/data-renderer';
+import BlockMenu from './block-menu';
+import DataRenderer from './data-renderer';
 import { getLifes } from '../data/fetchers';
 import { fetchData } from '../data/utils';
 import Typography from '@mui/material/Typography';
 
-export interface LifeMenuProps {
+export interface TopicsProps {
   individualId: number;
 }
 
-export default function LifeMenu(props: LifeMenuProps): React.ReactElement {
-  const [error, setError] = useState<AxiosError | null>(null);
+export default function Topics(props: TopicsProps): React.ReactElement {
+  const [error, setError] = useState<AxiosError | undefined>(undefined);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [data, setData] = useState<LifeData[]>([]);
 

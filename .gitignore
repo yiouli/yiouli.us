@@ -1,5 +1,6 @@
 **/__pycache__/*
 .venv/*
+.venvsource/*
 .vscode/*
 frontend/node_modules/*
 **/static/*

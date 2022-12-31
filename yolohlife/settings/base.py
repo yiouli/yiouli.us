@@ -29,7 +29,6 @@ except ImportError:
 
 INSTALLED_APPS = [
     'blog',
-    'home',
     'frontend',
     'search',
     'yolohlife',

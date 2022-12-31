@@ -13,27 +13,26 @@ import SitemapDrawer from './sitemap-drawer';
 import DraftsIcon from '@mui/icons-material/Drafts';
 
 export interface UtilBarProps {
-  currentPageId: number,
+  // currentPageId: number,
   mode: PaletteMode,
   onToggleMode: () => void,
-  onNavigate: (siteTreeNode: SiteTree) => void;
-  siteTree: SiteTree;
+  // onNavigate: (siteTreeNode: SiteTree) => void;
+  // siteTree: SiteTree;
 }
 
 export default function UtilBar(props: UtilBarProps): React.ReactElement {
-  const { currentPageId, mode, onToggleMode, onNavigate, siteTree } = props;
+  const {/* currentPageId, */mode, onToggleMode/*, onNavigate, siteTree*/ } = props;
   return <>
     <AppBar position="fixed" color='inherit' elevation={0}>
       <Toolbar>
         <Stack spacing={1} direction="row" sx={{ width: '100%' }}>
-          <SitemapDrawer
+          {/* <SitemapDrawer
             currentPageId={currentPageId}
             onNavigate={onNavigate}
             isOpen={false}
             siteTree={siteTree}
-          />
-          <Tooltip title='Contact Me'><Button><DraftsIcon /></Button></Tooltip>
-          <SearchDrawer isOpen={false} />
+          /> */}
+          {/* <SearchDrawer isOpen={false} /> */}
           <FormGroup sx={{ order: 100, pl: 2 }}>
             <FormControlLabel
               control={<Switch color='secondary' onChange={onToggleMode} defaultChecked={false} />}
