@@ -4,7 +4,7 @@ from google.cloud import secretmanager as sm
 
 from yolohlife.settings.base import *
 
-ALLOWED_HOSTS = ['www.yoloh.life', 'yoloh.life']
+ALLOWED_HOSTS = ['wwww.yiouli.us', 'yiouli.us', 'www.yoloh.life', 'yoloh.life']
 DEBUG = False
 
 ############# GOOGLE CLOUD SETTINGS ########################################################

@@ -2,6 +2,7 @@ import Typography from '@mui/material/Typography';
 import React from 'react';
 import { Card } from '@mui/material';
 import { ArticleData } from '../data/interfaces';
+import HTMLReactParser from 'html-react-parser';
 
 interface ArticleCardProps {
   article: ArticleData,
@@ -24,7 +25,7 @@ const ArticleCard: React.FC<ArticleCardProps> = (props) => {
       sx={{ maxWidth: '100%', float: 'left', mr: 3 }}
     /> */}
     <Typography variant='h5' sx={{ wordWrap: 'break-word', pb: 1 }}>{article.title}</Typography>
-    <Typography variant='body2' sx={{ wordWrap: 'break-word' }}>{article.body}</Typography>
+    <Typography variant='body2' sx={{ wordWrap: 'break-word' }}>{HTMLReactParser(article.body)}</Typography>
     {article.topics.map(t =>
       <Typography
         variant='body1'

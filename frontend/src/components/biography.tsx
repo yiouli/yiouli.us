@@ -10,6 +10,8 @@ import Box from '@mui/material/Box';
 import { fetchData } from '../data/utils';
 import DataRenderer from './data-renderer';
 import nullthrows from 'nullthrows';
+import ContactMenu from './contact-menu';
+import { textAlign } from '@mui/system';
 
 interface BioAvatarProps {
   individualData: IndividualData,
@@ -49,24 +51,27 @@ export default function Biography(props: BiographyProps): React.ReactElement {
 
   const getContent = useCallback(() => {
     const individual = nullthrows(data);
-    return <Stack
-      direction="row"
-      sx={{
-        width: '100%',
-        justifyContent: 'center',
-        alignItems: 'baseline',
-        gap: 2,
-      }}>
-      <Box sx={{ width: '40%', display: 'flex', flexDirection: 'row-reverse' }}>
-        <BioAvatar individualData={individual} />
-      </Box>
-      <Box sx={{ width: '60%', p: 3 }}>
-        <Typography variant="h3">
-          <>Hi! I'm {individual.first_name}.</>
-        </Typography>
-        <Typography variant="body1" component='div'>{HTMLReactParser(individual.about)}</Typography>
-      </Box>
-    </Stack>;
+    return <>
+      <Stack
+        direction="row"
+        sx={{
+          width: '100%',
+          justifyContent: 'center',
+          alignItems: 'baseline',
+          gap: 2,
+        }}>
+        <Box sx={{ width: '40%', display: 'flex', flexDirection: 'row-reverse' }}>
+          <BioAvatar individualData={individual} />
+        </Box>
+        <Box sx={{ width: '60%', p: 3 }}>
+          <Typography variant="h3">
+            <>Hi! I'm {individual.first_name}.</>
+          </Typography>
+          <Typography variant="body1" component='div'>{HTMLReactParser(individual.about)}</Typography>
+        </Box>
+      </Stack>
+      <ContactMenu />
+    </>
   }, [data]);
 
   return <DataRenderer isLoaded={isLoaded} error={error} getContent={getContent} />;
