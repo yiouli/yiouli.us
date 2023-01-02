@@ -36,16 +36,5 @@ steps:
       - --min-instances=0
       - --max-instances=2
 
-  - id: go-live
-    name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
-    entrypoint: gcloud
-    args:
-      - run
-      - services
-      - update-traffic
-      - ${_SERVICE_NAME}
-      - --region=${_REGION}
-      - --to-latest
-
 images:
   - ${_IMAGE}
