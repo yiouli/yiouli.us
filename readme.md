@@ -70,6 +70,8 @@ Switch `dev` vs. `prod` settings by using the `dev` and `prod` command respectiv
 
 # Build
 
+> Right now Google Cloud Build is setup to [automatically build & deploy on new commit](https://console.cloud.google.com/cloud-build/triggers;region=global/edit/56e733fd-0436-4ff9-b43e-8373db527496?project=yoloh-life) to the main branch in this Github repository.
+
 ## Frontend
 
 To build Javascript bundle, run:
@@ -102,6 +104,8 @@ What files are uploaded to cloud build is controled by [.gcloudignore](.gcloudig
 TBD
 
 # Deploy
+
+> Right now Google Cloud Build is setup to [automatically build & deploy on new commit](https://console.cloud.google.com/cloud-build/triggers;region=global/edit/56e733fd-0436-4ff9-b43e-8373db527496?project=yoloh-life) to the main branch in this Github repository.
 
 The application is currently hosted in Google Cloud. The server image is hosted via Google Cloud Run; database is SQLite (data is stored in the docker image) ~~Google Could SQL (Postgres)~~; and files (static, media) are served from Google Cloud Storage. All of them are based in `us-west1 (Oregon)` region.
 
