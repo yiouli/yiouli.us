@@ -6,7 +6,7 @@ export enum PageType {
   General = 'blog.Page',
 }
 
-export interface Metadata {
+export interface PageMetadata {
   html_url: string,
   type: string,
 }
@@ -14,7 +14,19 @@ export interface Metadata {
 export interface PageData {
   id: number,
   title: string,
-  meta: Metadata,
+  meta: PageMetadata,
+}
+
+export interface ImageMetaData {
+  type: string,
+  detail_url: string,
+  download_url: string,
+}
+
+export interface ImageData {
+  id: number,
+  meta: ImageMetaData,
+  title: string,
 }
 
 export type Sitemap = { [pageId: number]: PageData };
@@ -34,6 +46,7 @@ export interface IndividualData extends PageData {
   email?: string,
   phone?: string,
   about: string,
+  avatar: ImageData,
 }
 
 // interface definition should match APIFields defined in blog.models.TopicPage

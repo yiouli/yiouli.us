@@ -25,9 +25,10 @@ const ArticleCard: React.FC<ArticleCardProps> = (props) => {
       sx={{ maxWidth: '100%', float: 'left', mr: 3 }}
     /> */}
     <Typography variant='h5' sx={{ wordWrap: 'break-word', pb: 1 }}>{article.title}</Typography>
-    <Typography variant='body2' sx={{ wordWrap: 'break-word' }}><ReactMarkdown>{article.body}</ReactMarkdown></Typography>
+    <Typography component='div' variant='body2' sx={{ wordWrap: 'break-word' }}><ReactMarkdown>{article.body}</ReactMarkdown></Typography>
     {article.topics.map(t =>
       <Typography
+        key={'topic-' + t.id}
         variant='body1'
         sx={{
           display: 'inline',
