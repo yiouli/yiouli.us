@@ -6,15 +6,45 @@ export enum PageType {
   General = 'blog.Page',
 }
 
-export interface Metadata {
+// the enum values should match the string name set in stream field of django models
+export enum BlockType {
+  Markdown = 'markdown',
+  ImageWithCaption = 'image_with_caption',
+}
+
+export interface PageMetadata {
   html_url: string,
-  type: string,
+  type: PageType,
 }
 
 export interface PageData {
   id: number,
   title: string,
-  meta: Metadata,
+  meta: PageMetadata,
+}
+
+export interface ImageMetaData {
+  type: string,
+  detail_url: string,
+  download_url: string,
+}
+
+export interface ImageData {
+  id: number,
+  meta: ImageMetaData,
+  title: string,
+}
+
+export interface ImageWithCaptionBlock {
+  caption: string,
+  image: number,
+}
+
+export interface BlockData {
+  type: BlockType,
+  // all type of block values should be outlined here to avoid error
+  value: string | ImageWithCaptionBlock,
+  id: string,
 }
 
 export type Sitemap = { [pageId: number]: PageData };
@@ -34,6 +64,7 @@ export interface IndividualData extends PageData {
   email?: string,
   phone?: string,
   about: string,
+  avatar: ImageData,
 }
 
 // interface definition should match APIFields defined in blog.models.TopicPage
@@ -43,8 +74,8 @@ export interface TopicData extends PageData {
 
 // interface definition should match APIFields defined in blog.models.ArticlePage
 export interface ArticleData extends PageData {
-  body: string,
   date: string,
   date_display: string,
   topics: PageData[],
+  content: BlockData[],
 }

@@ -11,6 +11,7 @@ import DataRenderer from './data-renderer';
 import nullthrows from 'nullthrows';
 import ContactMenu from './contact-menu';
 import ReactMarkdown from "react-markdown";
+import { textAlign } from '@mui/system';
 
 interface BioAvatarProps {
   individualData: IndividualData,
@@ -21,12 +22,17 @@ function BioAvatar(props: BioAvatarProps): React.ReactElement {
   const fn = data.first_name;
   const ln = data.last_name;
   const sx = {
+    height: 200,
+    width: 200,
+    border: 3,
+    display: 'block',
   };
-  // if (data.avatar) {
-  //   return <Avatar alt={fn} src={data.avatar} />;
-  // }
-  // else {
-    return <Avatar alt={fn}>{fn[0]}{ln[0]}</Avatar>
+  if (data.avatar) {
+    return <Avatar sx ={sx} alt={fn} src={data.avatar.meta.download_url} />;
+  }
+  else {
+    return <Avatar sx ={sx} alt={fn}>{fn[0]}{ln[0]}</Avatar>;
+  }
 }
 
 export interface BiographyProps {
@@ -54,15 +60,16 @@ export default function Biography(props: BiographyProps): React.ReactElement {
       <Stack
         direction="row"
         sx={{
-          width: '100%',
           justifyContent: 'center',
-          alignItems: 'baseline',
+          alignItems: 'center',
+          alignContent: 'center',
           gap: 2,
+          flexWrap: 'wrap',
         }}>
-        <Box sx={{ width: '40%', display: 'flex', flexDirection: 'row-reverse' }}>
+        <Box sx={{ flexBasis: '30%', p: 5, display: 'flex', justifyContent: 'right'}}>
           <BioAvatar individualData={individual} />
         </Box>
-        <Box sx={{ width: '60%', p: 3 }}>
+        <Box sx={{ p: 3, flexBasis: '55%' }}>
           <Typography variant="h3">
             <>Hi! I'm {individual.first_name}.</>
           </Typography>

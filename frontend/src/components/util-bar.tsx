@@ -11,6 +11,7 @@ import { SiteTree } from '../data/interfaces';
 import SearchDrawer from './search-drawer';
 import SitemapDrawer from './sitemap-drawer';
 import DraftsIcon from '@mui/icons-material/Drafts';
+import { fontStyle, style, typography } from '@mui/system';
 
 export interface UtilBarProps {
   // currentPageId: number,
