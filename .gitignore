@@ -2,5 +2,5 @@
 .venv/*
 .venvsource/*
 .vscode/*
-frontend/node_modules/*
 **/static/*
+node_modules

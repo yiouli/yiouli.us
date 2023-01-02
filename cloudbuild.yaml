@@ -1,5 +1,14 @@
 #the image variable should come from .bashrc setup
 steps:
+  - id: npm-build
+    name: node
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        npm install webpack webpack-cli \
+        && npm run build
+
   - id: docker-build
     name: gcr.io/cloud-builders/docker
     args:
