@@ -138,10 +138,6 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
-STATICFILES_DIRS = [
-    os.path.join(PROJECT_DIR, 'static'),
-]
-
 # Wagtail settings
 
 WAGTAIL_SITE_NAME = "yolohlife"
