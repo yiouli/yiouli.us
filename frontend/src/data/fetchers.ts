@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {
   ArticleData,
+  ImageData,
   IndividualData,
   PageData,
   PageType,
@@ -10,16 +11,7 @@ import {
 } from "./interfaces";
 import { buildSiteTrees, getCurrentSiteTree } from './utils';
 
-const dummyPage: PageData = {
-  id: 0,
-  title: 'dummy page',
-  meta: {
-    html_url: 'http://localhost:8000/',
-    type: 'blog.DummyPage'
-  }
-};
-
-async function getData(pageType: PageType, id?: number): Promise<any> {
+async function getPageData(pageType: PageType, id?: number): Promise<any> {
   const queryString = id == null
     ? `/api/v2/pages/?format=json&type=${pageType}&fields=*`
     : `/api/v2/pages/${id}/?format=json&type=${pageType}&fields=*`
@@ -42,17 +34,27 @@ export async function getSiteTree(currentPageId: number): Promise<SiteTree> {
 }
 
 export async function getIndividual(id: number): Promise<IndividualData> {
-  return getData(PageType.Individual, id);
+  return getPageData(PageType.Individual, id);
 }
 
 export async function getTopics(): Promise<TopicData[]> {
-  return getData(PageType.Topic).then(rawData => {
+  return getPageData(PageType.Topic).then(rawData => {
       return rawData.items;
     });
 }
 
 export async function getArticles(): Promise<ArticleData[]> {
-  return getData(PageType.Article).then(rawData => {
+  return getPageData(PageType.Article).then(rawData => {
     return rawData.items;
   });
+}
+
+export async function getImageData(id: number): Promise<ImageData> {
+  const res = await axios(`/api/v2/images/${id}/?format=json`);
+  return res.data;
+}
+
+export async function getImageUrl(id: number): Promise<string> {
+  const data = await getImageData(id);
+  return data.meta.download_url;
 }
