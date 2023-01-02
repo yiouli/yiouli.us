@@ -37,7 +37,7 @@ class ArticlePage(Page):
     api_fields = [
         APIField("body"),
         APIField('date'),
-        APIField('date_display', serializer=fields.DateTimeField(format='%3b %d %Y', source='date')),
+        APIField('date_display', serializer=fields.DateTimeField(format='%3b %02d %Y', source='date')),
         APIField("topics"),
     ]
 

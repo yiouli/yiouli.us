@@ -1,0 +1,15 @@
+#the image variable should come from .bashrc setup
+steps:
+  - id: 'docker-build'
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', '${_IMAGE}', '.']
+
+  - id: "django-collectstatic"
+    name: '${_IMAGE}'
+    args: 
+      - 'bash'
+      - '-c'
+      - 'python3 manage.py collectstatic --noinput'
+
+images:
+  - '${_IMAGE}'

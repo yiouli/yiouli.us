@@ -1,6 +1,6 @@
 # Description
 
-[Personal website](http://yoloh.life) developed on top of [Wagtail](https://wagtail.io/) & [Django](https://www.djangoproject.com/), and hosted in Google Cloud.
+[Personal website](http://yiouli.us) developed on top of [Wagtail](https://wagtail.io/) & [Django](https://www.djangoproject.com/), and hosted in Google Cloud.
 
 
 ## Python
@@ -89,9 +89,9 @@ This repo uses Docker to build container for server. The image can be directly b
 ### Cloud Build
 To build server image in Google Cloud, run:
 
-    gcb
+    build
 
-This command builds frontend in production settings locally before submit local files to Google Cloud and build remotely in the cloud. After successful build, the built image would be stored in Google Cloud Container Registry.
+This command builds frontend in production settings locally before submit local files to Google Cloud and build remotely in the cloud. After successful build, the built image would be stored in Google Cloud Artifact Registry.
 
 What files are uploaded to cloud build is controled by [.gcloudignore](.gcloudignore), the cloud build steps are configured in [cloudmigrate.yaml](cloudmigrate.yaml), and the docker build steps (run in cloud) are configured in [Dockerfile](Dockerfile).
 
@@ -103,13 +103,17 @@ TBD
 
 # Deploy
 
-The application is currently hosted in Google Cloud. The server image is hosted via Google Cloud Run; database is Google Could SQL (Postgres); and files are served from Google Cloud Storage. All of them are based in `us-west1 (Oregon)` region.
+The application is currently hosted in Google Cloud. The server image is hosted via Google Cloud Run; database is SQLite (data is stored in the docker image) ~~Google Could SQL (Postgres)~~; and files (static, media) are served from Google Cloud Storage. All of them are based in `us-west1 (Oregon)` region.
 
 To deploy the latest image to the internet, run:
 
-    gcd
+    deploy
 
 Browser cache might need to be cleared to see the latest changes in frontend.
+
+## Database & File Uploads
+
+Currently the database (i.e. Django/Wagtail data) is stored using SQLite, in the file db.sqlite3. The file is packaged inside the docker file and accessed by the Cloudrun web servers locally. As result, any write operations happening in production **will not persist**. To update data, run the server locally and edit via admin portal on localhost, then run build & deploy to upload the modified database file.
 
 ## DNS Routing
 

@@ -10,7 +10,12 @@ COPY requirements.txt .
 RUN pip install -U pip && pip install -r requirements.txt
 
 # Copy local code to the container image.
+# right now the db.sqlite3 is packaged as the site is still reading from sqlite db
+# it should be removed once the DB is moved to cloudSQL
+# it should be added to gitignore, gcloudignore and dockerignore
 COPY . .
+# having this statement here to make sure the DB file is included in the docker image
+COPY db.sqlite3 .
 
 # Service must listen to $PORT environment variable.
 # This default value facilitates local development.

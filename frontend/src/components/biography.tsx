@@ -1,5 +1,4 @@
 import { AxiosError } from 'axios';
-import HTMLReactParser from 'html-react-parser';
 import React, { useCallback, useEffect, useState } from 'react';
 import { getIndividual } from '../data/fetchers';
 import { IndividualData } from '../data/interfaces';
@@ -11,7 +10,7 @@ import { fetchData } from '../data/utils';
 import DataRenderer from './data-renderer';
 import nullthrows from 'nullthrows';
 import ContactMenu from './contact-menu';
-import { textAlign } from '@mui/system';
+import ReactMarkdown from "react-markdown";
 
 interface BioAvatarProps {
   individualData: IndividualData,
@@ -67,7 +66,7 @@ export default function Biography(props: BiographyProps): React.ReactElement {
           <Typography variant="h3">
             <>Hi! I'm {individual.first_name}.</>
           </Typography>
-          <Typography variant="body1" component='div'>{HTMLReactParser(individual.about)}</Typography>
+          <Typography variant="body1" component='div'><ReactMarkdown>{individual.about}</ReactMarkdown></Typography>
         </Box>
       </Stack>
       <ContactMenu />

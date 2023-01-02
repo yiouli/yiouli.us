@@ -11,7 +11,11 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import environ
+import io
 import os
+
+from google.cloud import secretmanager as sm
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
@@ -144,4 +148,31 @@ WAGTAIL_SITE_NAME = "yolohlife"
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
-BASE_URL = 'https://yoloh.life'
+BASE_URL = 'https://yiouli.us'
+
+############# GOOGLE CLOUD SETTINGS ########################################################
+
+# Pull django-environ settings file, stored in Secret Manager
+client = sm.SecretManagerServiceClient()
+
+name = f"projects/yoloh-life/secrets/application_settings/versions/latest"
+payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")  # type: ignore
+env = environ.Env()
+env.read_env(io.StringIO(payload))
+
+# Setting this value from django-environ
+SECRET_KEY = env("SECRET_KEY")
+
+# Set this value from django-environ
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR + '/db.sqlite3',
+    }
+}
+# DATABASES = {"default": env.db()}
+
+# Define static storage via django-storages[google]
+DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+GS_BUCKET_NAME = env("GS_BUCKET_NAME")
+GS_DEFAULT_ACL = "publicRead"
