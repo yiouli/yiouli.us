@@ -28,7 +28,11 @@ steps:
     args: 
       - bash
       - -c
-      - python3 manage.py collectstatic --noinput
+      - |
+        if [[ ${_STATIC_DEPLOY} = 'full' ]]
+        then python3 manage.py collectstatic --noinput
+        else python3 manage.py collectstatic --noinput -i wagtail*/** -i rest_framework/** -i admin/**
+        fi
 
   - id: deploy
     name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
