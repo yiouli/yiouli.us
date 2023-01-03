@@ -1,7 +1,7 @@
 {
-  "name": "yoloh-life",
+  "name": "yiouli-us",
   "version": "1.0.0",
-  "description": "Frontend of https://yoloh.life",
+  "description": "Frontend of https://yiouli.us",
   "scripts": {
     "type-check": "tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch",
@@ -36,8 +36,8 @@
     "react-router-dom": "^5.3.0",
     "react-swipeable-views": "^0.14.0",
     "typescript": "^4.4.4",
-    "webpack": "^5.59.1",
-    "webpack-cli": "^4.9.1"
+    "webpack": "^5.75.0",
+    "webpack-cli": "^4.10.0"
   },
   "dependencies": {
     "@emotion/react": "^11.5.0",

@@ -1,14 +1,12 @@
 import Typography from '@mui/material/Typography';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Card, CardContent, CardMedia } from '@mui/material';
-import { ArticleData, BlockData, BlockType, ImageWithCaptionBlock, IndividualData } from '../data/interfaces';
+import { ArticleData, BlockData, BlockType, ImageWithCaptionBlock } from '../data/interfaces';
 import ReactMarkdown from "react-markdown";
 import { AxiosError } from 'axios';
-import nullthrows from 'nullthrows';
-import { getImageUrl, getIndividual } from '../data/fetchers';
+import { getImageUrl } from '../data/fetchers';
 import { fetchData } from '../data/utils';
 import DataRenderer from './data-renderer';
-import { border, padding } from '@mui/system';
 
 interface ContentBlockProps {
   content: BlockData

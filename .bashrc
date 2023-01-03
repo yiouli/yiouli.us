@@ -22,17 +22,21 @@ alias prod="export DJANGO_SETTINGS_MODULE='yolohlife.settings.prod'; echo 'Chang
 alias appsettings="gcloud secrets versions access latest --secret application_settings && echo ''"
 alias adminpw="gcloud secrets versions access latest --secret admin_password && echo ''"
 
-alias jsb="cd $APPROOT/frontend; npm run dev; cd $APPROOT"
-alias jsbprod="cd $APPROOT/frontend; npm run build; cd $APPROOT"
-alias deploy="jsbprod; gcloud builds submit --config $GC_BUILD_FILE \
-  --substitutions _IMAGE=$IMAGE,_REGION=$REGION,_SERVICE_NAME=$CLOUDRUN_SERVICE_NAME,_SERVICE_ACCOUNT=$CLOUDRUN_SERVICE_ACCOUNT"
+function deploy_func {
+    gcloud builds submit --config $GC_BUILD_FILE --substitutions \
+      _IMAGE=$IMAGE,_REGION=$REGION,_SERVICE_NAME=$CLOUDRUN_SERVICE_NAME,_SERVICE_ACCOUNT=$CLOUDRUN_SERVICE_ACCOUNT,_STATIC_DEPLOY=$1
+}
+
+alias deploy="deploy_func 0"
+# only use this when full update of all static files is needed, e.g. depdency packages are updated
+alias deployfull="deploy_func 'full'"
 
 # alias startdb="gcloud sql instances patch ${instance} --activation-policy=NEVER"
 # alias stopdb="gcloud sql instances patch ${instance} --activation-policy=ALWAYS"
 # alias dbproxy="cloud_sql_proxy -dir=/cloudsql &"
 
-alias watch="cd $APPROOT/frontend; npm run watch"
-alias run="python3 manage.py runserver"
+alias run="npm run watch &\python3 manage.py runserver &"
+alias stop="kill $(jobs -p)"
 
 dev
 source .venv/bin/activate

@@ -1,7 +1,8 @@
-# Description
+# Overview
 
 [Personal website](http://yiouli.us) developed on top of [Wagtail](https://wagtail.io/) & [Django](https://www.djangoproject.com/), and hosted in Google Cloud.
 
+# Dev Environment Setup
 
 ## Python
 
@@ -49,7 +50,7 @@ Authenticate with your account:
 
 Reload your bash to populate project name in variables.
 
-# Environment Setup
+## Commandline (Bash)
 
 > **Several command alias used below are defined in local [.bashrc](.bashrc) file in this repository, it's important to complete this section before following further steps.**
 
@@ -68,52 +69,35 @@ Make sure Django is using the desired settings in your local environment, by che
 Switch `dev` vs. `prod` settings by using the `dev` and `prod` command respectively. `dev` settings point to sqlite3 database in local foler and build/serve static files locally; `prod` settings point to Google Cloud Postgres database and serves static files out of Google Cloud Storage.
 
 
-# Build
+# Build & Deploy
 
 > Right now Google Cloud Build is setup to [automatically build & deploy on new commit](https://console.cloud.google.com/cloud-build/triggers;region=global/edit/56e733fd-0436-4ff9-b43e-8373db527496?project=yoloh-life) to the main branch in this Github repository.
 
-## Frontend
+## Build Frontend Locally
 
-To build Javascript bundle, run:
+To build Javascript bundle, run in the root directory:
 
-    jsb
+    npm run dev
 
 This builds the development version. Run the following for production version:
 
-    jsbprod
+    npm run build
 
-Javascript is built with [Webpack](https://webpack.js.org/), using [Babel](https://babeljs.io/) as transcoder/loader. Build configurations are in [webpack.config.js](frontend/webpack.config.js) and compiling configurations are in [.babelrc](frontend/.babelrc). Additionally, common build/test commands are hooked into `npm` via [package.json](frontend/package.json).
+Javascript is built with [Webpack](https://webpack.js.org/), using [Babel](https://babeljs.io/) as transcoder/loader. Build configurations are in [webpack.config.js](webpack.config.js) and compiling configurations are in [.babelrc](.babelrc). Additionally, common build/test commands are hooked into `npm` via [package.json](package.json).
 
-## Server
+## Build & Deploy with Google Cloud Build
 
-This repo uses Docker to build container for server. The image can be directly build in Google Cloud Build, or built locally.
-
-### Cloud Build
-To build server image in Google Cloud, run:
-
-    build
-
-This command builds frontend in production settings locally before submit local files to Google Cloud and build remotely in the cloud. After successful build, the built image would be stored in Google Cloud Artifact Registry.
-
-What files are uploaded to cloud build is controled by [.gcloudignore](.gcloudignore), the cloud build steps are configured in [cloudmigrate.yaml](cloudmigrate.yaml), and the docker build steps (run in cloud) are configured in [Dockerfile](Dockerfile).
-
-> **Please make sure frontend build is up-to-date before building container locally.**
-
-### Local Build
-
-TBD
-
-# Deploy
-
-> Right now Google Cloud Build is setup to [automatically build & deploy on new commit](https://console.cloud.google.com/cloud-build/triggers;region=global/edit/56e733fd-0436-4ff9-b43e-8373db527496?project=yoloh-life) to the main branch in this Github repository.
-
-The application is currently hosted in Google Cloud. The server image is hosted via Google Cloud Run; database is SQLite (data is stored in the docker image) ~~Google Could SQL (Postgres)~~; and files (static, media) are served from Google Cloud Storage. All of them are based in `us-west1 (Oregon)` region.
-
-To deploy the latest image to the internet, run:
+To manually trigger build & deployment of the application in Google Cloud, run:
 
     deploy
 
-Browser cache might need to be cleared to see the latest changes in frontend.
+The build & deploy process on a high level:
+1. gcloud CLI collect all local files, excluding files specified in [.gcloudignore](.gcloudignore) or [.gitignore](.gitignore) when .gcloudignore is not present, packaged them in a tarball and upload the package to Google Cloud storage.
+2. Google Cloud Build run build steps specified in [cloudbuild.yaml](cloudbuild.yaml). The steps include
+    - building frontend (configured by [package.json](package.json))
+    - building & pushing docker image (configured by [Dockerfile](Dockerfile)) to Google Artifact Registry
+    - collect static files (using django [collectstatic](https://docs.djangoproject.com/en/4.1/ref/contrib/staticfiles/), configured by [django settings](yolohlife/settings/prod.py)) from the cloud build machine into Google Cloud Storage
+    - deploy to Google Cloudrun service.
 
 ## Database & File Uploads
 
@@ -137,19 +121,17 @@ TBD
 
 ## Run Application Locally
 
-To run with local settings without the need to connect & update in Google Cloud, first make sure Django is using dev settings, run:
-
-    dev
-
-Start a dedicated process to automatically build frontend assets upon file changes:
-
-    cd frontend; npm run watch
-
-Start a dedicated process to run Django server locally:
+To run server & continuous frontend build locally, run:
 
     run
 
-Now the site should be accessible on http://localhost:8000.
+This will run the processes with debug settings in the back ground. To stop, run:
+
+    stop
+
+Settings can be switched between dev & prod, using command `dev` and `prod`.
+
+Once the application is running locally, the site should be accessible at http://localhost:8000 & the admin portal accessible at http://localhost:8000/admin
 
 ## Run Locally with PROD Settings
 
@@ -161,6 +143,8 @@ Switch Django to use `prod` settings, run:
     prod
 
 #### Setup Google Cloud SQL Proxy
+
+> This part is currently deprecated as the DB is right now using sqlite3 file instead of an actual cloud SQL database, due to cost.
 
 To authenticate local connection to Google Cloud SQL, a proxy needs to be running locally. Following the steps:
 
