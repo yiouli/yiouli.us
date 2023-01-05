@@ -15,9 +15,7 @@ import { fetchData } from './data/utils';
 import coolTheme, { coolDarkTheme } from './themes/cool-theme';
 import PageContainer, { Section } from './components/page-container';
 import Biography from './components/biography';
-import Highlights from './components/highlights';
-import Topics from './components/topics';
-import JournalTimeline from './components/journal';
+import Journal from './components/Journal';
 
 declare global {
   var pageId: number;
@@ -81,7 +79,6 @@ function App(): React.ReactElement {
   // const route = useCallback((treeNode: SiteTree) => {
   //   setCurrentPageId(treeNode.id);
   // }, []);
-
   const getContent = useCallback(() => {
     return <>
       <CssBaseline />
@@ -99,8 +96,7 @@ function App(): React.ReactElement {
             <Highlights />
           </Section> */}
           <Section>
-            <Topics />
-            <JournalTimeline />
+            <Journal />
           </Section>
       </PageContainer>
     </>;

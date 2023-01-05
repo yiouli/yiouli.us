@@ -11,11 +11,11 @@ import {
 } from "./interfaces";
 import { buildSiteTrees, getCurrentSiteTree } from './utils';
 
-async function getPageData(pageType: PageType, id?: number): Promise<any> {
-  const queryString = id == null
+async function getPageData(pageType: PageType, filter_query: string = '', id?: number): Promise<any> {
+  const queryString = id == undefined
     ? `/api/v2/pages/?format=json&type=${pageType}&fields=*`
     : `/api/v2/pages/${id}/?format=json&type=${pageType}&fields=*`
-  const res = await axios(queryString);
+  const res = await axios(queryString + filter_query);
   return res.data;
 }
 
@@ -34,7 +34,7 @@ export async function getSiteTree(currentPageId: number): Promise<SiteTree> {
 }
 
 export async function getIndividual(id: number): Promise<IndividualData> {
-  return getPageData(PageType.Individual, id);
+  return getPageData(PageType.Individual, '', id);
 }
 
 export async function getTopics(): Promise<TopicData[]> {
@@ -43,8 +43,11 @@ export async function getTopics(): Promise<TopicData[]> {
     });
 }
 
-export async function getArticles(): Promise<ArticleData[]> {
-  return getPageData(PageType.Article).then(rawData => {
+export async function getArticles(topicId?: number): Promise<ArticleData[]> {
+  return getPageData(
+    PageType.Article,
+    topicId == undefined? '': `&topics=${topicId}`
+  ).then(rawData => {
     return rawData.items;
   });
 }
