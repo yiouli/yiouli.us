@@ -11,7 +11,6 @@ import DataRenderer from './data-renderer';
 import nullthrows from 'nullthrows';
 import ContactMenu from './contact-menu';
 import ReactMarkdown from "react-markdown";
-import { textAlign } from '@mui/system';
 
 interface BioAvatarProps {
   individualData: IndividualData,
@@ -65,11 +64,12 @@ export default function Biography(props: BiographyProps): React.ReactElement {
           alignContent: 'center',
           gap: 2,
           flexWrap: 'wrap',
+          p: 5,
         }}>
-        <Box sx={{ flexBasis: '30%', p: 5, display: 'flex', justifyContent: 'right'}}>
+        <Box sx={{ flexBasis: '25%', flexGrow: 1, display: 'flex', justifyContent: 'center'}}>
           <BioAvatar individualData={individual} />
         </Box>
-        <Box sx={{ p: 3, flexBasis: '55%' }}>
+        <Box sx={{ p: 3, flexBasis: '55%', flexGrow: 2 }}>
           <Typography variant="h3">
             <>Hi! I'm {individual.first_name}.</>
           </Typography>

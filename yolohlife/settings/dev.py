@@ -16,9 +16,3 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-huwp9%m7ygahg%gxee78-v!031yz-biwd(a=gcln*#=%kd)$g_'
-
-
-

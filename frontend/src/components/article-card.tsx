@@ -85,6 +85,7 @@ const ArticleCard: React.FC<ArticleCardProps> = (props) => {
         sx={{
           display: 'inline',
           wordWrap: 'break-word',
+          fontWeight: 'bold',
           pr: 1,
         }}>
           {'#' + t.title}
