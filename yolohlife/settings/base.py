@@ -161,12 +161,12 @@ SECRET_KEY = env("SECRET_KEY")
 
 # Set this value from django-environ
 DATABASES = {
-    'default': {
+    'default': env.db(),
+    'local': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR + '/db.sqlite3',
     }
 }
-# DATABASES = {"default": env.db()}
 
 # Define static storage via django-storages[google]
 DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
